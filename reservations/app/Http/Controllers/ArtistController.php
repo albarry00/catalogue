@@ -113,6 +113,14 @@ class ArtistController extends Controller
     //Remove the specified resource from storage.
     public function destroy(string $id)
     {
-        //
+        $artist = Artist::find($id);
+
+        if($artist) {
+            $artist->delete();
+        }
+        //Artist::destroy($id);  autre methode
+
+        return redirect()->route('artist.index');
     }
+
 }
