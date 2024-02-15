@@ -8,9 +8,8 @@ use App\Models\Artist;
 
 class ArtistController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
+    // Display a listing of the resource.
     public function index()
     {
         $artists = Artist::all();
@@ -22,9 +21,8 @@ class ArtistController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
+    //Show the form for creating a new resource.
     public function create()
     {
         //
@@ -56,7 +54,12 @@ class ArtistController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $artist = Artist::find($id);
+        
+        return view('artist.edit',[
+            'artist' => $artist,
+        ]);
+
     }
 
     /**
@@ -64,8 +67,23 @@ class ArtistController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //Validation des données du formulaire
+        $validated = $request->validate([
+            'firstname' => 'required|max:60',
+            'lastname' => 'required|max:60',
+        ]);
+
+        //Le formulaire a été validé, nous récupérons l’artiste à modifier
+        $artist = Artist::find($id);
+
+	   //Mise à jour des données modifiées et sauvegarde dans la base de données
+        $artist->update($validated);
+
+        return view('artist.show',[
+            'artist' => $artist,
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
