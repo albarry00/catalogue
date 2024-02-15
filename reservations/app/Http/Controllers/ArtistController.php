@@ -25,20 +25,38 @@ class ArtistController extends Controller
     //Show the form for creating a new resource.
     public function create()
     {
-        //
+        return view('artist.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    
+    //Store a newly created resource in storage.
     public function store(Request $request)
     {
-        //
+         //Validation des données du formulaire
+        $validated = $request->validate([
+            'firstname' => 'required|max:60',
+            'lastname' => 'required|max:60',
+        ]);
+
+        //Le formulaire a été validé, nous créons un nouvel artiste à insérer
+        $artist = new Artist();
+
+        //Assignation des données et sauvegarde dans la base de données
+        $artist->firstname = $validated['firstname'];
+        $artist->lastname = $validated['lastname'];
+
+        $artist->save();
+
+        return redirect()->route('artist.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
+
+    
+    //Display the specified resource.
+    
     public function show($id)
     {
         $artist = Artist::find($id);
@@ -49,9 +67,9 @@ class ArtistController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
+    //Show the form for editing the specified resource.
+     
     public function edit(string $id)
     {
         $artist = Artist::find($id);
@@ -62,9 +80,8 @@ class ArtistController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
+    //Update the specified resource in storage.
     public function update(Request $request, string $id)
     {
         //Validation des données du formulaire
@@ -82,12 +99,18 @@ class ArtistController extends Controller
         return view('artist.show',[
             'artist' => $artist,
         ]);
+
+        //Mise à jour des données modifiées et sauvegarde dans la base de données
+        $artist->firstname = $validated['firstname'];
+        $artist->lastname = $validated['lastname'];
+
+	   $artist->save();
+
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
+    //Remove the specified resource from storage.
     public function destroy(string $id)
     {
         //
