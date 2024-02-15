@@ -1,4 +1,6 @@
-@extends('layouts.app')
+ 
+
+@extends('layouts.main')
 
 @section('title', 'Fiche d\'un artiste')
 
@@ -14,4 +16,5 @@
 </form>
 
     <nav><a href="{{ route('artist.index') }}">Retour à l'index</a></nav>
+    
 @endsection
