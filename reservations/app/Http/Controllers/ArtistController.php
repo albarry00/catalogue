@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Artist;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class ArtistController extends Controller
@@ -25,10 +27,14 @@ class ArtistController extends Controller
     //Show the form for creating a new resource.
     public function create()
     {
+        if (!Gate::allows('create-artist')) {
+            abort(403);
+        }
+
         if(Auth::user()==null || Auth::user()->role!='admin') {
             return redirect()->route('login');
         }
-
+        
         return view('artist.create');
     }
 
@@ -37,6 +43,10 @@ class ArtistController extends Controller
     //Store a newly created resource in storage.
     public function store(Request $request)
     {
+        if (!Gate::allows('create-artist')) {
+            abort(403);
+        }
+
          //Validation des données du formulaire
         $validated = $request->validate([
             'firstname' => 'required|max:60',
@@ -76,8 +86,11 @@ class ArtistController extends Controller
      
     public function edit(string $id)
     {
+        if (!Gate::allows('create-artist')) {
+            abort(403);
+        }
         $artist = Artist::find($id);
-        
+
         return view('artist.edit',[
             'artist' => $artist,
         ]);
@@ -88,6 +101,10 @@ class ArtistController extends Controller
     //Update the specified resource in storage.
     public function update(Request $request, string $id)
     {
+        if (!Gate::allows('create-artist')) {
+            abort(403);
+        }
+
         //Validation des données du formulaire
         $validated = $request->validate([
             'firstname' => 'required|max:60',
@@ -117,6 +134,10 @@ class ArtistController extends Controller
     //Remove the specified resource from storage.
     public function destroy(string $id)
     {
+        if (!Gate::allows('create-artist')) {
+            abort(403);
+        }
+
         $artist = Artist::find($id);
 
         if($artist) {
