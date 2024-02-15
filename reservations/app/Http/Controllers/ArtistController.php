@@ -25,6 +25,10 @@ class ArtistController extends Controller
     //Show the form for creating a new resource.
     public function create()
     {
+        if(Auth::user()==null || Auth::user()->role!='admin') {
+            return redirect()->route('login');
+        }
+
         return view('artist.create');
     }
 
